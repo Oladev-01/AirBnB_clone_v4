@@ -98,3 +98,11 @@ class TestFileStorage(unittest.TestCase):
     def test_counts_user(self):
         storage = DBStorage()
         self.assertEqual(storage.count(User), 3)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """test if the get method is correctly defined"""
+        storage = DBStorage()
+        new_state = State()
+        storage.new(new_state)
+        self.assertEqual(new_state, storage.get(State, new_state.id))
