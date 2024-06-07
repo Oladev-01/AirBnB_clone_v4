@@ -55,7 +55,7 @@ class FileStorage:
                 jo = json.load(f)
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-        except:
+        except Exception as e:
             pass
 
     def delete(self, obj=None):
@@ -64,9 +64,10 @@ class FileStorage:
             key = obj.__class__.__name__ + '.' + obj.id
             if key in self.__objects:
                 del self.__objects[key]
-    
+
     def get(self, cls, id):
-        """this method gets a particular instance of the representation via its id"""
+        """this method gets a particular instance of the
+          representation via its id"""
         if cls is None or id is None:
             return None
         try:
