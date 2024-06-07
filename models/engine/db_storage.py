@@ -85,7 +85,8 @@ class DBStorage:
         """this method returns the total count of the object
         in the db based on the class name or all"""
         if cls is None:
-            return sum(self.__session.query(cls).count() for key, cls in classes.items())
+            return sum(self.__session.query(cls).count()
+                       for key, cls in classes.items())
         else:
             return self.__session.query(cls).count()
 
