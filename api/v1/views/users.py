@@ -5,9 +5,9 @@ view for User objects that handles all default RESTful
 """
 
 from api.v1.views import app_views
-from models.user import User
 from models import storage
 from flask import jsonify, abort, request
+from models.user import User
 
 
 @app_views.route("/users", strict_slashes=False)
@@ -20,7 +20,7 @@ def all_users():
     list_all_users = []
     for user in all_users.values():
         list_all_users.append(user.to_dict())
-    return jsonify(list_all_user)
+    return jsonify(list_all_users)
 
 
 @app_views.route("/users/<user_id>", strict_slashes=False)
