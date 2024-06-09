@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 """
-view for State objects that handles all default RESTful 
+view for State objects that handles all default RESTful
 """
 
 from models.state import State
@@ -9,13 +9,14 @@ from api.v1.views import app_views
 from models import storage
 from flask import jsonify, abort, request
 
+
 @app_views.route("/states", strict_slashes=False)
 def all_states():
     """
     return a json format of all states
     """
 
-    all_states =  storage.all(State)
+    all_states = storage.all(State)
     list_all_states = []
     for state in all_states.values():
         list_all_states.append(state.to_dict())
@@ -33,7 +34,9 @@ def get_state(state_id):
     else:
         return jsonify(state.to_dict())
 
-@app_views.route("/states/<state_id>", methods=['DELETE'], strict_slashes=False)
+
+@app_views.route("/states/<state_id>",
+                 methods=['DELETE'], strict_slashes=False)
 def delete_state(state_id):
     """
     delete a state object from the storage with
