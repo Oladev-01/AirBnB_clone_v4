@@ -1,66 +1,67 @@
 #!/usr/bin/python3
 
 """
-view for User object that handles all default RESTful API
-action
+view for User objects that handles all default RESTful
 """
 
-from flask import jsonify, abort, request
+from models.user import User
 from api.v1.views import app_views
 from models import storage
-from models.user import User
+from flask import jsonify, abort, request
 
 
-@app_views.route("/users", methods=["GET"], strict_slashes=False)
+@app_views.route("/users", strict_slashes=False)
 def all_users():
     """
-    return all the users in the storage
+    return a json format of all users
     """
 
     all_users = storage.all(User)
-    user_list = []
-
+    list_all_users = []
     for user in all_users.values():
-        user_list.append(user.to_dict())
+        list_all_users.append(user.to_dict())
+    return jsonify(list_all_user)
 
-    return jsonify(user_list)
 
-
-@app_views.route("/users/<user_id>", methods=["GET"], strict_slashes=False)
+@app_views.route("/users/<user_id>", strict_slashes=False)
 def get_user(user_id):
     """
-    return a particular User object with the specified id
+    return a specific user object with a particular id
     """
-
     user = storage.get(User, user_id)
     if user is None:
         abort(404)
-    return jsonify(user.to_dict())
+    else:
+        return jsonify(user.to_dict())
 
 
-@app_views.route("/users/<user_id>", methods=["DELETE"], strict_slashes=False)
+@app_views.route("/users/<user_id>",
+                 methods=['DELETE'], strict_slashes=False)
 def delete_user(user_id):
     """
-    delete a user object specified with the id
+    delete a user object from the storage with
+    a particular id
     """
-
     user = storage.get(User, user_id)
     if user is None:
         abort(404)
-    user.delete()
-    storage.save()
-    return jsonify({}), 200
+    else:
+        user.delete()
+        storage.save()
+        return jsonify({}), 200
 
 
 @app_views.route("/users", methods=["POST"], strict_slashes=False)
 def post_user():
     """
-    add a new User object to the storage
+    create a new user object and add to the storage
     """
+
     try:
         json_data = request.get_json()
     except Exception as e:
-        abort(400, description="Not a JOSN")
+        abort(400, description="Not a JSON")
+
     if "email" not in json_data:
         abort(400, description="Missing email")
     if "password" not in json_data:
@@ -70,10 +71,10 @@ def post_user():
     return jsonify(new_user.to_dict()), 201
 
 
-@app_views.route("/users/<user_id>", methods=["PUT"], strict_slashes=False)
+@app_views.route("/user/<user_id>", methods=["PUT"], strict_slashes=False)
 def modify_user(user_id):
     """
-    update a particular user object with the specified id
+    modify a user objecte from the storage
     """
 
     user = storage.get(User, user_id)
@@ -84,11 +85,11 @@ def modify_user(user_id):
     except Exception as e:
         abort(400, description="Not a JSON")
     for key, value in json_data.items():
-        if key == "id" or key == "email":
+        if key == "id" or key == "created_at" or key == "updated_at":
             continue
-        elif key == "created_at" or key == "updated_at":
+        elif key == "email":
             continue
         else:
-            setattr(user, key, value)
-    storage.save()
-    return jsonify(user.to_dict()), 200
+            setattr(state, key, value)
+    user.save()
+    return jsonify(user.to_dict())
