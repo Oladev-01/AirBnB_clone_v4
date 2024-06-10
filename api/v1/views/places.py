@@ -6,8 +6,8 @@ cotains all the route for the cities api
 
 from models.city import City
 from models.place import Place
-from models import storage
 from api.v1.views import app_views
+from models import storage
 from flask import abort, jsonify, request
 
 
