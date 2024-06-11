@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""main API def"""
+
+"""main API deffination"""
 
 from flask import Flask, jsonify
 from models import storage
