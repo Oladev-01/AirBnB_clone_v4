@@ -1,15 +1,12 @@
 #!/usr/bin/python3
-"""Doc
+"""Testing documentation of a module
 """
-from models.engine.tmp_db_storage import DBStorage
+from importlib import import_module
+import sys
 
+m_imported = import_module(sys.argv[1])
 
-class DBStorage(DBStorage):
-    """Doc
-    """
-
-    def get(self, cls, id):
-        """
-        returns the object by class and ID
-        """
-        return None
+if m_imported.__doc__ is None:
+    print("No module documentation", end="")
+else:
+    print("OK", end="")
