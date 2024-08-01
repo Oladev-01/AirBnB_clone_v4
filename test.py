@@ -1,12 +1,20 @@
 #!/usr/bin/python3
-"""Testing documentation of a module
+""" Web server
 """
-from importlib import import_module
-import sys
+from flask import Flask, redirect, url_for
+app = Flask(__name__)
 
-m_imported = import_module(sys.argv[1])
+@app.route("/", strict_slashes=False)
+def index():
+    """ Root
+    """
+    return redirect(url_for('redirect_1'), code=301)
 
-if m_imported.__doc__ is None:
-    print("No module documentation", end="")
-else:
-    print("OK", end="")
+@app.route("/redirect_1", strict_slashes=False)
+def redirect_1():
+    """ redirect_1
+    """
+    return "With one redirection"
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5050)
